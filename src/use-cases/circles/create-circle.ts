@@ -1,13 +1,15 @@
 import { Circle, CircleId, Colour } from '@/domain/circles/circle';
 import { CircleRepository } from '@/domain/circles/circle-repository';
 import * as uuid from 'uuid';
-import { Command, CommandHandler } from '../command';
+import { z } from 'zod';
+import { CommandHandler, createCommandSchema } from '../command';
 
-export interface CreateCircleCommand extends Command {
-  __name: 'CreateCircle';
-  name: string;
-  colour: string;
-}
+export const CreateCircleCommandSchema = createCommandSchema('CreateCircle', {
+  name: z.string().trim().min(1, 'Name cannot be empty'),
+  colour: z.string().trim().toUpperCase().length(6).regex(/^[0-9A-F]{6}$/, 'Colour must be a valid hex code'),
+});
+
+export type CreateCircleCommand = z.infer<typeof CreateCircleCommandSchema>;
 
 type Dependencies = {
   circleRepository: CircleRepository;

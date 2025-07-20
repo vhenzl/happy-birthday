@@ -1,13 +1,15 @@
 import { Emoji, SpecialDateType, SpecialDateTypeId } from '@/domain/special-date-types/special-date-type';
 import { SpecialDateTypeRepository } from '@/domain/special-date-types/special-date-type-repository';
 import * as uuid from 'uuid';
-import { Command, CommandHandler } from '../command';
+import { z } from 'zod';
+import { CommandHandler, createCommandSchema } from '../command';
 
-export interface CreateSpecialDateTypeCommand extends Command {
-  __name: 'CreateSpecialDateType';
-  name: string;
-  emoji: string;
-}
+export const CreateSpecialDateTypeCommandSchema = createCommandSchema('CreateSpecialDateType', {
+  name: z.string().trim().min(1, 'Name cannot be empty'),
+  emoji: z.string().trim().min(1, 'Emoji cannot be empty'),
+});
+
+export type CreateSpecialDateTypeCommand = z.infer<typeof CreateSpecialDateTypeCommandSchema>;
 
 type Dependencies = {
   specialDateTypeRepository: SpecialDateTypeRepository;
