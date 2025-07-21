@@ -14,7 +14,7 @@ export class SpecialDate {
     id: SpecialDateId,
     typeId: SpecialDateTypeId,
     date: MonthDay,
-    year: Year | null
+    year: Year | null,
   ) {
     if (year !== null && !date.isValidForYear(year.value)) {
       throw new BusinessError('Date is not valid for the specified year');
@@ -96,7 +96,7 @@ type DayNumber = Branded<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 |
 
 function isValidDayForMonth(
   month: MonthNumber,
-  day: number
+  day: number,
 ): day is DayNumber {
   const daysInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   return day >= 1 && day <= daysInMonth[month - 1];

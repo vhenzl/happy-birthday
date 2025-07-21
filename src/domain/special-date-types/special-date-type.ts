@@ -52,4 +52,3 @@ function isValidSingleEmoji(value: string): boolean {
   return value.length > 0 &&
     /\p{Emoji}/u.test(value);
 }
-

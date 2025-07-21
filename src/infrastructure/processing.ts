@@ -3,14 +3,14 @@ import { ZodType } from 'zod';
 
 export function withValidation<TCommand, TResult>(
   schema: ZodType<TCommand>,
-  handler: CommandHandler<TCommand, TResult>
+  handler: CommandHandler<TCommand, TResult>,
 ): CommandHandler<TCommand, TResult> {
   return async (command) => {
     const result = schema.safeParse(command);
     if (!result.success) {
       throw new InvalidCommandError(result.error.issues.map(issue => ({
         path: issue.path,
-        message: issue.message
+        message: issue.message,
       })));
     }
     return handler(command);
@@ -18,7 +18,7 @@ export function withValidation<TCommand, TResult>(
 }
 
 export function withLogging<TCommand, TResult>(
-  handler: CommandHandler<TCommand, TResult>
+  handler: CommandHandler<TCommand, TResult>,
 ): CommandHandler<TCommand, TResult> {
   return async (command) => {
     try {
@@ -32,4 +32,3 @@ export function withLogging<TCommand, TResult>(
     }
   };
 }
-

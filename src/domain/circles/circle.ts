@@ -42,5 +42,3 @@ export class Colour {
     return this.#hex === other.#hex;
   }
 }
-
-
