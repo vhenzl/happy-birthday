@@ -1,7 +1,8 @@
 import { Command, CommandHandler, InvalidCommandError } from '@/use-cases/command';
+import { InvalidQueryError, Query, QueryHandler } from '@/use-cases/query';
 import { ZodType } from 'zod';
 
-export function withValidation<TCommand extends Command, TResult>(
+export function withCommandValidation<TCommand extends Command, TResult>(
   schema: ZodType<TCommand>,
   handler: CommandHandler<TCommand, TResult>,
 ): CommandHandler<TCommand, TResult> {
@@ -17,7 +18,7 @@ export function withValidation<TCommand extends Command, TResult>(
   };
 }
 
-export function withLogging<TCommand extends Command, TResult>(
+export function withCommandLogging<TCommand extends Command, TResult>(
   handler: CommandHandler<TCommand, TResult>,
 ): CommandHandler<TCommand, TResult> {
   return async (command) => {
@@ -31,5 +32,21 @@ export function withLogging<TCommand extends Command, TResult>(
       console.error(`Command ${commandName} processing failed:`, error);
       throw error;
     }
+  };
+}
+
+export function withQueryValidation<TQuery extends Query, TResult>(
+  schema: ZodType<TQuery>,
+  handler: QueryHandler<TQuery, TResult>,
+): QueryHandler<TQuery, TResult> {
+  return async (query) => {
+    const result = schema.safeParse(query);
+    if (!result.success) {
+      throw new InvalidQueryError(result.error.issues.map(issue => ({
+        path: issue.path,
+        message: issue.message,
+      })));
+    }
+    return handler(query);
   };
 }
