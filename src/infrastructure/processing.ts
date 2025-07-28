@@ -1,7 +1,7 @@
-import { CommandHandler, InvalidCommandError } from '@/use-cases/command';
+import { Command, CommandHandler, InvalidCommandError } from '@/use-cases/command';
 import { ZodType } from 'zod';
 
-export function withValidation<TCommand, TResult>(
+export function withValidation<TCommand extends Command, TResult>(
   schema: ZodType<TCommand>,
   handler: CommandHandler<TCommand, TResult>,
 ): CommandHandler<TCommand, TResult> {
@@ -17,7 +17,7 @@ export function withValidation<TCommand, TResult>(
   };
 }
 
-export function withLogging<TCommand, TResult>(
+export function withLogging<TCommand extends Command, TResult>(
   handler: CommandHandler<TCommand, TResult>,
 ): CommandHandler<TCommand, TResult> {
   return async (command) => {

@@ -16,16 +16,21 @@ export function createCommandSchema<const TName extends string, TShape extends z
   });
 }
 
-export type CommandHandler<TCommand, TResult> = (command: TCommand) => Promise<TResult>;
+export type CommandHandler<TCommand extends Command, TResult> = (command: TCommand) => Promise<TResult>;
+
+type InvalidCommandErrorDetail = {
+  readonly path: (number | string | symbol)[];
+  readonly message: string;
+};
 
 export class InvalidCommandError extends Error {
+  public readonly errors?: InvalidCommandErrorDetail[];
+
   constructor(
-    public readonly errors?: {
-      readonly path: (number | string | symbol)[];
-      readonly message: string;
-    }[],
+    errors: InvalidCommandErrorDetail[],
   ) {
     super('Invalid command');
     this.name = 'InvalidCommandError';
+    this.errors = errors;
   }
 }
