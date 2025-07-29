@@ -4,6 +4,7 @@ import { openDatabaseSync } from 'expo-sqlite';
 import { createContext, Suspense, use, useContext } from 'react';
 import { ActivityIndicator } from 'react-native';
 import 'react-native-get-random-values';
+import '../../global.css';
 
 SplashScreen.preventAutoHideAsync();
 
