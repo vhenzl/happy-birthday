@@ -6,7 +6,7 @@ export default function Index() {
       <Text className="text-xl font-bold text-blue-500 mb-4">
         Welcome to Nativewind!
       </Text>
-      <Text className="text-gray-500">Edit src/app/index.tsx to edit this screen.</Text>
+      <Text className="text-gray-500">Edit src/app/(timeline)/index.tsx to edit this screen.</Text>
     </View>
   );
 }

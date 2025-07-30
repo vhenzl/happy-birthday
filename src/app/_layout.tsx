@@ -1,10 +1,12 @@
 import { runMigrations } from '@/data/migrations';
-import { SplashScreen, Stack } from 'expo-router';
+import { SplashScreen, Tabs } from 'expo-router';
 import { openDatabaseSync } from 'expo-sqlite';
 import { createContext, Suspense, use, useContext } from 'react';
 import { ActivityIndicator } from 'react-native';
 import 'react-native-get-random-values';
 import '../../global.css';
+
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -69,7 +71,51 @@ function Main({ children }: { children: React.ReactNode }) {
 export default function RootLayout() {
   return (
     <Main>
-      <Stack />
+      <Tabs>
+        <Tabs.Screen
+          name="(timeline)"
+          options={{
+            title: 'Anniversaries',
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons
+                name="heart"
+                size={size}
+                color={color}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="people"
+          options={{
+            title: 'People',
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons
+                name="people"
+                size={size}
+                color={color}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: 'Settings',
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons
+                name="settings"
+                size={size}
+                color={color}
+              />
+            ),
+
+          }}
+        />
+      </Tabs>
     </Main>
   );
 }
